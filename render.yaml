@@ -6,7 +6,7 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn server:app
     envVars:
-      - key: DATABASE_URL
+      - key: postgresql://taskflow_db_xs9b_user:2JIENWvQTJaldvuqjhZCudwhAuw1z8aX@dpg-d8mb4h0js32c73cf85r0-a/taskflow_db_xs9b
         fromDatabase:
           name: taskflow-db
           property: connectionString
