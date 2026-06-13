@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Gestión Premium de Tareas</title>
+    <!-- Google Fonts: Outfit (headings) and Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h1>Task<span>Flow</span></h1>
+            </div>
+            
+            <div class="user-selector-container">
+                <label for="active-user-select"><i class="fa-solid fa-user-shield"></i> Usuario Activo:</label>
+                <div class="custom-select-wrapper">
+                    <select id="active-user-select" class="active-user-select">
+                        <!-- Cargar dinámicamente -->
+                    </select>
+                </div>
+                <div class="user-avatar" id="current-user-avatar">?</div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD STATS -->
+        <section class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="stat-pending">0</h3>
+                    <p>Pendientes</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon progress">
+                    <i class="fa-solid fa-spinner fa-spin-slow"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="stat-progress">0</h3>
+                    <p>En Progreso</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon completed">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="stat-completed">0</h3>
+                    <p>Completadas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="stat-total">0</h3>
+                    <p>Total Tareas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="app-main">
+            <!-- TOOLBAR / ACTIONS -->
+            <section class="toolbar">
+                <div class="search-filter-group">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Buscar por título o descripción...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">Todas</button>
+                        <button class="filter-btn" data-filter="Pendiente">Pendientes</button>
+                        <button class="filter-btn" data-filter="En Progreso">En Progreso</button>
+                        <button class="filter-btn" data-filter="Completada">Completadas</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="open-modal-btn">
+                    <i class="fa-solid fa-plus"></i> Nueva Tarea
+                </button>
+            </section>
+
+            <!-- TASKS GRID -->
+            <section class="tasks-section">
+                <div class="section-header">
+                    <h2>Tablero de Tareas</h2>
+                    <span class="view-description">Solo el creador puede modificar el estado de sus tareas. Todos pueden verlas.</span>
+                </div>
+                
+                <div class="tasks-grid" id="tasks-grid">
+                    <!-- Las tareas se cargarán dinámicamente aquí -->
+                    <div class="loading-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <p>Cargando tareas...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer-credits">
+            <p>&copy; 2026 TaskFlow. Diseñado con <i class="fa-solid fa-heart"></i> para una gestión impecable.</p>
+        </footer>
+    </div>
+
+    <!-- CREATE TASK MODAL -->
+    <div class="modal-overlay" id="task-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-circle-plus"></i> Crear Nueva Tarea</h2>
+                <button class="close-btn" id="close-modal-btn">&times;</button>
+            </div>
+            <form id="task-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="task-title">Título de la Tarea <span class="required">*</span></label>
+                        <input type="text" id="task-title" required placeholder="Ej: Desarrollar API de usuarios">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-desc">Descripción</label>
+                        <textarea id="task-desc" rows="4" placeholder="Detalla el alcance y requisitos de la tarea..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-responsible">Responsable <span class="required">*</span></label>
+                            <div class="select-wrapper">
+                                <select id="task-responsible" required>
+                                    <option value="" disabled selected>Seleccione un responsable</option>
+                                    <!-- Cargar dinámicamente -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-due-date">Fecha de Vencimiento <span class="required">*</span></label>
+                            <input type="date" id="task-due-date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="creator-preview">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Se registrará como Creador a: <strong id="modal-creator-name">Alice Smith</strong></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancel-task-btn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Tarea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION SYSTEM -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

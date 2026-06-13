@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# PostgreSQL local binaries & data (evitar subir 200MB+ de archivos locales)
+pgsql/
+pgsql_log.txt
+
+# OS metadata
+.DS_Store
+Thumbs.db
