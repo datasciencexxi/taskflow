@@ -15,7 +15,7 @@ services:
 
 databases:
   # Base de Datos PostgreSQL administrada
-  - name: taskflow
+  - name: dpg-d8mb4h0js32c73cf85r0-a
     databaseName: taskflow_db_xs9b
     user: taskflow_db_xs9b_user
     plan: free
